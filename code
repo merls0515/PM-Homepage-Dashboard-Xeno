@@ -1,0 +1,1590 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xeno PM Presentation</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    .slide-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .slide-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 3rem;
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: white;
+      border-top: 2px solid #e5e7eb;
+    }
+    
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    .nav-button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .nav-button:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .slide-indicator {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #d1d5db;
+      transition: all 0.3s;
+    }
+    
+    .dot.active {
+      background: #3b82f6;
+      transform: scale(1.3);
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .slide-content > div {
+      animation: fadeIn 0.5s ease-out;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="slide-container">
+   <div id="slideContent" class="slide-content"></div>
+   <nav class="navigation"><button id="prevBtn" class="nav-button" style="background: #3b82f6; color: white;">
+     <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline>
+     </svg> Previous </button>
+    <div class="slide-indicator" id="slideIndicator"></div><button id="nextBtn" class="nav-button" style="background: #3b82f6; color: white;"> Next 
+     <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline>
+     </svg></button>
+   </nav>
+  </div>
+  <script>
+    const defaultConfig = {
+      presentation_title: "The Xeno Homepage",
+      presentation_subtitle: "From Login to Impact",
+      author_name: "Merlyn Victor",
+      institution_name: "Vellore Institute of Technology, Bhopal",
+      primary_color: "#3b82f6",
+      secondary_color: "#8b5cf6",
+      background_color: "#ffffff",
+      text_color: "#111827",
+      accent_color: "#06b6d4"
+    };
+    
+    let currentSlide = 0;
+    
+    const slides = [
+      // Slide 1: Cover
+      {
+        title: "Cover",
+        render: (config) => `
+          <div class="flex flex-col items-center justify-center h-full rounded-xl p-8" style="background: linear-gradient(135deg, #581c87 0%, #3730a3 50%, #1e3a8a 100%); color: white; min-height: 600px;">
+            <div class="text-center space-y-8 max-w-4xl">
+              <div class="flex items-center justify-center space-x-4 mb-8">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, ${config.accent_color} 0%, ${config.primary_color} 100%);">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                  </svg>
+                </div>
+                <h1 class="text-6xl font-bold">XENO</h1>
+              </div>
+              
+              <div class="space-y-6">
+                <h1 class="text-7xl font-bold leading-tight">${config.presentation_title}</h1>
+                <h2 class="text-4xl font-medium" style="color: ${config.accent_color};">${config.presentation_subtitle}</h2>
+              </div>
+              
+              <div class="mt-12 pt-8" style="border-top: 1px solid rgba(6, 182, 212, 0.3);">
+                <p class="text-2xl font-semibold" style="color: #cffafe;">PM Intern Assignment</p>
+                <div class="mt-6 text-xl space-y-2" style="color: #d1d5db;">
+                  <p class="text-2xl font-bold">${config.author_name}</p>
+                  <p class="text-lg opacity-90">${config.institution_name}</p>
+                </div>
+              </div>
+              
+              <div class="mt-12 text-sm" style="color: rgba(207, 250, 254, 0.7);">
+                <p>Aligned with Xeno's mission: "Delight customers and achieve attributable increase in revenue"</p>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 2: Who Are We Designing For?
+      {
+        title: "Who Are We Designing For?",
+        render: (config) => `
+          <div class="space-y-8">
+            <h2 class="text-4xl font-bold" style="color: ${config.text_color};">The Retail Marketer</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-6">
+                <div class="p-6 rounded-lg" style="background: #eff6ff;">
+                  <h3 class="text-xl font-semibold mb-3" style="color: #1e3a8a;">Role</h3>
+                  <p style="color: #374151;">Marketing Manager at a mid-size retailer (fashion, electronics, home goods)</p>
+                </div>
+                
+                <div class="p-6 rounded-lg" style="background: #faf5ff;">
+                  <h3 class="text-xl font-semibold mb-3" style="color: #581c87;">Daily Challenge</h3>
+                  <p style="color: #374151;">Managing campaigns across 5+ channels (SMS, Email, WhatsApp, Facebook, Instagram), proving ROI, and personalizing at scale</p>
+                </div>
+                
+                <div class="p-6 rounded-lg" style="background: #f0fdf4;">
+                  <h3 class="text-xl font-semibold mb-3" style="color: #14532d;">Goal</h3>
+                  <p style="color: #374151;">Increase repeat purchase revenue through personalized customer engagement</p>
+                </div>
+              </div>
+              
+              <div class="space-y-6">
+                <div class="p-6 rounded-lg" style="background: #fef2f2; border-left: 4px solid #ef4444;">
+                  <h3 class="text-xl font-semibold mb-3" style="color: #7f1d1d;">Pain Point</h3>
+                  <p class="text-lg italic" style="color: ${config.text_color};">
+                    "Creating 10 segments, 10 SMS campaigns, 10 WhatsApp messages... that's practically impossible."
+                  </p>
+                </div>
+                
+                <div class="p-6 rounded-lg" style="background: #f9fafb;">
+                  <h3 class="text-xl font-semibold mb-4" style="color: ${config.text_color};">Their Needs When Logging In:</h3>
+                  <div class="space-y-3">
+                    <div class="flex items-start space-x-3">
+                      <span class="text-2xl">1️⃣</span>
+                      <p style="color: #374151; padding-top: 0.25rem;"><span class="font-semibold">"Show me what's working"</span> – Quick overview of campaign performance</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                      <span class="text-2xl">2️⃣</span>
+                      <p style="color: #374151; padding-top: 0.25rem;"><span class="font-semibold">"Let me act fast"</span> – One-click access to create campaigns</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                      <span class="text-2xl">3️⃣</span>
+                      <p style="color: #374151; padding-top: 0.25rem;"><span class="font-semibold">"Help me understand"</span> – Clear insights on customer behavior</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 3: 3 Guiding Principles
+      {
+        title: "3 Guiding Principles",
+        render: (config) => `
+          <div class="flex flex-col justify-center space-y-10">
+            <div class="text-center mb-8">
+              <div class="inline-flex items-center space-x-3 mb-4">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="${config.secondary_color}" stroke-width="2">
+                  <rect x="4" y="4" width="16" height="16" rx="2"/>
+                  <rect x="9" y="9" width="6" height="6"/>
+                  <line x1="9" y1="1" x2="9" y2="4"/>
+                  <line x1="15" y1="1" x2="15" y2="4"/>
+                  <line x1="9" y1="20" x2="9" y2="23"/>
+                  <line x1="15" y1="20" x2="15" y2="23"/>
+                  <line x1="20" y1="9" x2="23" y2="9"/>
+                  <line x1="20" y1="14" x2="23" y2="14"/>
+                  <line x1="1" y1="9" x2="4" y2="9"/>
+                  <line x1="1" y1="14" x2="4" y2="14"/>
+                </svg>
+                <h2 class="text-4xl font-bold" style="color: ${config.text_color};">Design Philosophy for Xeno</h2>
+              </div>
+              <p class="text-xl" style="color: #4b5563;">Built around Xeno's core mission: "Delight customers through personalized engagement"</p>
+            </div>
+            
+            <div class="space-y-8">
+              <div class="p-8 rounded-2xl shadow-lg" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #a7f3d0;">
+                <div class="flex items-start space-x-6">
+                  <div class="flex-shrink-0">
+                    <div class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                      <span class="text-4xl">💰</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-3 mb-3">
+                      <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: #d1fae5;">
+                        <span style="color: #047857; font-weight: bold;">1</span>
+                      </div>
+                      <h3 class="text-3xl font-bold" style="color: ${config.text_color};">Revenue-First</h3>
+                    </div>
+                    <p class="text-xl leading-relaxed" style="color: #374151;">
+                      Every dashboard element and metric clearly ties back to <span class="font-semibold" style="color: #047857;">attributable business impact</span> (incremental revenue, product hit rate) - mirroring Xeno's focus on measurable outcomes
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-8 rounded-2xl shadow-lg" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #93c5fd;">
+                <div class="flex items-start space-x-6">
+                  <div class="flex-shrink-0">
+                    <div class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, ${config.primary_color} 0%, ${config.accent_color} 100%);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-3 mb-3">
+                      <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: #dbeafe;">
+                        <span style="color: #1e40af; font-weight: bold;">2</span>
+                      </div>
+                      <h3 class="text-3xl font-bold" style="color: ${config.text_color};">Action-Oriented</h3>
+                    </div>
+                    <p class="text-xl leading-relaxed" style="color: #374151;">
+                      Insights are paired with <span class="font-semibold" style="color: #1e40af;">one-click execution buttons</span> ("Create Campaign," "Boost Offer") to reduce time from insight to action - enabling Xeno's promise of "all in one workflow"
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-8 rounded-2xl shadow-lg" style="background: linear-gradient(135deg, #faf5ff 0%, #fce7f3 100%); border: 2px solid #d8b4fe;">
+                <div class="flex items-start space-x-6">
+                  <div class="flex-shrink-0">
+                    <div class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, ${config.secondary_color} 0%, #ec4899 100%);">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-3 mb-3">
+                      <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: #f3e8ff;">
+                        <span style="color: #6b21a8; font-weight: bold;">3</span>
+                      </div>
+                      <h3 class="text-3xl font-bold" style="color: ${config.text_color};">Persona-Centric</h3>
+                    </div>
+                    <p class="text-xl leading-relaxed" style="color: #374151;">
+                      The interface surfaces <span class="font-semibold" style="color: #6b21a8;">customer behavior and personas</span> (favorite category, next best product) rather than just channel performance - reflecting Xeno's 360�� customer view
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 4: The Homepage Layout
+      {
+        title: "The Homepage Layout",
+        render: (config) => `
+          <div class="space-y-6">
+            <div class="text-center mb-8">
+              <div class="flex items-center justify-center space-x-4 mb-4">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polygon points="10 8 16 12 10 16 10 8"/>
+                </svg>
+                <h2 class="text-4xl font-bold" style="color: ${config.text_color};">Xeno Homepage Structure</h2>
+              </div>
+              <p class="text-xl" style="color: #4b5563;">
+                <span class="font-semibold">Design Logic:</span> F-pattern layout for natural eye movement, designed for Xeno's core workflow
+              </p>
+            </div>
+            
+            <!-- Wireframe -->
+            <div class="p-6 rounded-2xl shadow-2xl" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border: 2px solid #d1d5db;">
+              <!-- Header -->
+              <div class="p-4 rounded-xl mb-4 flex justify-between items-center shadow-lg" style="background: linear-gradient(90deg, #581c87 0%, #3730a3 100%);">
+                <div class="flex items-center space-x-4">
+                  <div class="w-24 h-10 rounded-lg flex items-center justify-center shadow-md" style="background: linear-gradient(90deg, ${config.accent_color} 0%, ${config.primary_color} 100%);">
+                    <span class="text-white font-bold text-lg">XENO</span>
+                  </div>
+                  <span class="text-white font-medium text-lg">Good morning, Marketing Manager</span>
+                </div>
+                <div class="flex space-x-3">
+                  <button class="px-5 py-2.5 rounded-lg font-medium text-sm text-white shadow-md" style="background: linear-gradient(90deg, ${config.accent_color} 0%, ${config.primary_color} 100%);">
+                    + Quick Create Campaign
+                  </button>
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-md" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);">
+                    <span class="text-white text-xl">🔍</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Top Metrics -->
+              <div class="grid grid-cols-4 gap-4 mb-6">
+                <div class="p-5 rounded-xl shadow-sm" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #a7f3d0;">
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="text-xs font-medium" style="color: #4b5563;">Incremental Revenue</div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+                      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                      <polyline points="16 7 22 7 22 13"/>
+                    </svg>
+                  </div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">$284K</div>
+                  <div class="text-xs font-semibold mt-2 px-2 py-1 rounded-full inline-block" style="color: #059669; background: #d1fae5;">
+                    Today • Xeno-driven
+                  </div>
+                </div>
+                <div class="p-5 rounded-xl shadow-sm" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #93c5fd;">
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="text-xs font-medium" style="color: #4b5563;">Personalization Score</div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <circle cx="12" cy="12" r="6"/>
+                      <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                  </div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">8.4/10</div>
+                  <div class="text-xs font-semibold mt-2 px-2 py-1 rounded-full inline-block" style="color: #2563eb; background: #dbeafe;">
+                    ↑ Xeno adoption metric
+                  </div>
+                </div>
+                <div class="p-5 rounded-xl shadow-sm" style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border: 2px solid #d8b4fe;">
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="text-xs font-medium" style="color: #4b5563;">Active Journeys</div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                  </div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">12</div>
+                  <div class="text-xs font-semibold mt-2 px-2 py-1 rounded-full inline-block" style="color: #9333ea; background: #f3e8ff;">
+                    Automated in Xeno
+                  </div>
+                </div>
+                <div class="p-5 rounded-xl shadow-sm" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #fcd34d;">
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="text-xs font-medium" style="color: #4b5563;">Offer Redemption</div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                      <line x1="7" y1="7" x2="7.01" y2="7"/>
+                    </svg>
+                  </div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">23.4%</div>
+                  <div class="text-xs font-semibold mt-2 px-2 py-1 rounded-full inline-block" style="color: #d97706; background: #fde68a;">
+                    ↑ +2.1% vs target
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Two Column Main Body -->
+              <div class="grid grid-cols-3 gap-5 mb-5">
+                <!-- Left: AI Recommendations (Wider) -->
+                <div class="col-span-2 p-5 rounded-xl shadow-sm" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); border: 2px solid #bfdbfe;">
+                  <div class="flex items-center space-x-3 mb-4">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+                      <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+                      <path d="M12 2v10l8.66 5"/>
+                    </svg>
+                    <h3 class="font-bold text-xl" style="color: ${config.text_color};">��� Xeno AI-Personalized Recommendations</h3>
+                  </div>
+                  
+                  <div class="space-y-3">
+                    <div class="bg-white p-4 rounded-lg shadow-sm" style="border: 1px solid #d1d5db;">
+                      <p class="font-semibold mb-2" style="color: #1f2937;">Launch win-back offer for 500 'Discount-Seeking' personas</p>
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs" style="color: #6b7280;">Using Xeno's persona segmentation</span>
+                        <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white shadow transition-shadow" style="background: linear-gradient(90deg, #10b981 0%, #059669 100%);">
+                          [Create in Xeno]
+                        </button>
+                      </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm" style="border: 1px solid #d1d5db;">
+                      <p class="font-semibold mb-2" style="color: #1f2937;">Boost 'Weekend Shoppers' WhatsApp campaign</p>
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs" style="color: #6b7280;">Cross-channel optimization</span>
+                        <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white shadow transition-shadow" style="background: linear-gradient(90deg, ${config.primary_color} 0%, ${config.accent_color} 100%);">
+                          [Optimize in Xeno]
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Right: Cross-Channel Campaigns -->
+                <div class="p-5 rounded-xl shadow-sm" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); border: 2px solid #e9d5ff;">
+                  <div class="flex items-center space-x-3 mb-4">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polygon points="10 8 16 12 10 16 10 8"/>
+                    </svg>
+                    <h3 class="font-bold text-xl" style="color: ${config.text_color};">��������� Xeno Campaigns</h3>
+                  </div>
+                  <div class="space-y-3 text-sm">
+                    <div class="bg-white p-3 rounded-lg shadow-sm" style="border: 1px solid #d1d5db;">
+                      <p class="font-semibold" style="color: #1f2937;">Back-to-School Sale</p>
+                      <div class="flex items-center space-x-2 my-2">
+                        <span class="px-2 py-1 rounded text-xs" style="background: #dbeafe; color: #1e40af;">SMS</span>
+                        <span class="px-2 py-1 rounded text-xs" style="background: #f3e8ff; color: #7e22ce;">Email</span>
+                        <span class="px-2 py-1 rounded text-xs" style="background: #e0e7ff; color: #4338ca;">FB</span>
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span class="font-semibold text-xs" style="color: #10b981;">● On Track</span>
+                        <span class="text-xs" style="color: #6b7280;">Xeno unified</span>
+                      </div>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm" style="border: 1px solid #d1d5db;">
+                      <p class="font-semibold" style="color: #1f2937;">Weekend Flash Deal</p>
+                      <div class="flex items-center space-x-2 my-2">
+                        <span class="px-2 py-1 rounded text-xs" style="background: #dbeafe; color: #1e40af;">SMS</span>
+                        <span class="px-2 py-1 rounded text-xs" style="background: #f3e8ff; color: #7e22ce;">Email</span>
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span class="font-semibold text-xs" style="color: #10b981;">● Active</span>
+                        <span class="text-xs" style="color: #6b7280;">Multi-touch</span>
+                      </div>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm" style="border: 1px solid #d1d5db;">
+                      <p class="font-semibold" style="color: #1f2937;">VIP Welcome Flow</p>
+                      <div class="flex items-center space-x-2 my-2">
+                        <span class="px-2 py-1 rounded text-xs" style="background: #f3e8ff; color: #7e22ce;">Email</span>
+                        <span class="px-2 py-1 rounded text-xs" style="background: #e0e7ff; color: #4338ca;">FB</span>
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span class="font-semibold text-xs" style="color: ${config.primary_color};">● Live</span>
+                        <span class="text-xs" style="color: #6b7280;">Automated</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Bottom: Loyalty & Offers Pulse -->
+              <div class="grid grid-cols-2 gap-5 mb-5">
+                <div class="p-5 rounded-xl shadow-sm" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #86efac;">
+                  <div class="flex items-center space-x-3 mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+                      <rect x="3" y="8" width="18" height="4" rx="1"/>
+                      <path d="M12 8v13"/>
+                      <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+                      <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+                    </svg>
+                    <h3 class="font-bold" style="color: #1f2937;">🎁 Xeno Loyalty Program</h3>
+                  </div>
+                  <div class="space-y-2 text-sm">
+                    <p style="color: #374151;"><span class="font-semibold">Points Issued:</span> 45.2K this week via Xeno</p>
+                    <p style="color: #374151;"><span class="font-semibold">Top Reward:</span> Free Shipping (Xeno gamified)</p>
+                    <p class="text-xs mt-3" style="color: #6b7280;">Data powering Xeno's personalization</p>
+                  </div>
+                </div>
+                <div class="p-5 rounded-xl shadow-sm" style="background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%); border: 2px solid #fdba74;">
+                  <div class="flex items-center space-x-3 mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                      <line x1="7" y1="7" x2="7.01" y2="7"/>
+                    </svg>
+                    <h3 class="font-bold" style="color: #1f2937;">🏷��� Xeno Trending Offers</h3>
+                  </div>
+                  <div class="space-y-2 text-sm">
+                    <p style="color: #374151;"><span class="font-semibold">Most Redeemed:</span> 'SUMMER20' (Fashion)</p>
+                    <p style="color: #374151;"><span class="font-semibold">Created in:</span> Xeno Offer Management</p>
+                    <p class="text-xs mt-3" style="color: #6b7280;">Xeno's NextGen offer engine</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Recent Activity -->
+              <div class="p-4 rounded" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                <h3 class="font-bold mb-3" style="color: ${config.text_color}; font-size: 1.1rem;">📊 Recent Activity</h3>
+                <div class="space-y-2 text-sm">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 rounded-full" style="background: #10b981;"></div>
+                    <span style="color: #374151;"><span class="font-semibold">"Summer Sale"</span> campaign generated <span class="font-bold">$12.4K</span> today</span>
+                  </div>
+                  <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 rounded-full" style="background: ${config.primary_color};"></div>
+                    <span style="color: #374151;"><span class="font-semibold">342 customers</span> engaged with personalized WhatsApp messages</span>
+                  </div>
+                  <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 rounded-full" style="background: #f59e0b;"></div>
+                    <span style="color: #374151;"><span class="font-semibold">"Win-back Journey"</span> has 23% redemption rate (above 18% target)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-center text-sm mt-4" style="color: #6b7280;">
+              <p><strong>F-pattern layout</strong> showing Xeno's value from first glance • All data from Xeno's unified platform</p>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 5: Annotated Wireframe
+      {
+        title: "Annotated Wireframe",
+        render: (config) => `
+          <div class="space-y-6">
+            <h2 class="text-4xl font-bold text-center mb-6" style="color: ${config.text_color};">Design Decisions Explained</h2>
+            
+            <!-- Wireframe with Annotations -->
+            <div class="p-6 rounded-2xl shadow-2xl" style="background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%); border: 2px solid #d1d5db;">
+              <!-- Header -->
+              <div class="p-4 rounded-xl mb-4 flex justify-between items-center" style="background: #f3f4f6;">
+                <div class="flex items-center space-x-4">
+                  <div class="w-24 h-10 rounded-lg flex items-center justify-center" style="background: ${config.secondary_color};">
+                    <span class="text-white font-bold">XENO</span>
+                  </div>
+                  <span class="font-medium" style="color: #374151;">Good morning, Mark</span>
+                </div>
+                <div class="flex space-x-3">
+                  <button class="px-4 py-2 rounded-lg font-medium text-sm text-white" style="background: ${config.primary_color};">
+                    + Quick Create
+                  </button>
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: #d1d5db;">
+                    🔍
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Top Metrics with Annotations -->
+              <div class="grid grid-cols-4 gap-4 mb-5">
+                <div class="relative p-4 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-lg" style="background: #10b981; z-index: 10;">①</div>
+                  <div class="text-xs mb-1 font-medium" style="color: #6b7280;">Incremental Revenue</div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">$284K</div>
+                  <div class="text-xs font-semibold mt-1" style="color: #10b981;">Today</div>
+                </div>
+                <div class="relative p-4 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-lg" style="background: #f97316; z-index: 10;">②</div>
+                  <div class="text-xs mb-1 font-medium" style="color: #6b7280;">Personalization Score</div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">8.4/10</div>
+                  <div class="text-xs font-semibold mt-1" style="color: ${config.primary_color};">Above avg</div>
+                </div>
+                <div class="p-4 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <div class="text-xs mb-1 font-medium" style="color: #6b7280;">Active Journeys</div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">12</div>
+                  <div class="text-xs font-semibold mt-1" style="color: #9333ea;">Running</div>
+                </div>
+                <div class="p-4 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <div class="text-xs mb-1 font-medium" style="color: #6b7280;">Offer Redemption Rate</div>
+                  <div class="text-2xl font-bold" style="color: ${config.text_color};">23.4%</div>
+                  <div class="text-xs font-semibold mt-1" style="color: #10b981;">↑ +2.1%</div>
+                </div>
+              </div>
+              
+              <!-- Main Content Area with Annotations -->
+              <div class="grid grid-cols-3 gap-5 mb-5">
+                <!-- AI Recommendations -->
+                <div class="relative col-span-2 p-5 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-lg" style="background: ${config.primary_color}; z-index: 10;">③</div>
+                  <h3 class="font-bold text-xl mb-3" style="color: ${config.text_color};">💡 Xeno AI-Personalized Recommendations</h3>
+                  <div class="space-y-2">
+                    <div class="p-3 rounded" style="background: white; border: 1px solid #e5e7eb;">
+                      <p class="text-sm font-semibold mb-1" style="color: #1f2937;">Win-back offer for 'Discount-Seeking'</p>
+                      <button class="text-xs px-3 py-1 rounded text-white" style="background: #10b981;">[Create Campaign]</button>
+                    </div>
+                    <div class="p-3 rounded" style="background: white; border: 1px solid #e5e7eb;">
+                      <p class="text-sm font-semibold mb-1" style="color: #1f2937;">Boost 'Weekend Shoppers' WhatsApp</p>
+                      <button class="text-xs px-3 py-1 rounded text-white" style="background: ${config.primary_color};">[Optimize]</button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Campaigns -->
+                <div class="relative p-5 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-lg" style="background: #9333ea; z-index: 10;">④</div>
+                  <h3 class="font-bold text-xl mb-3" style="color: ${config.text_color};">🚀 Xeno Cross-Channel Campaigns</h3>
+                  <div class="space-y-2 text-xs">
+                    <div class="p-2 rounded" style="background: white; border: 1px solid #e5e7eb;">
+                      <p class="font-semibold" style="color: #1f2937;">Back-to-School</p>
+                      <div class="flex space-x-1 mt-1">
+                        <span class="px-1 py-0.5 rounded" style="background: #dbeafe; color: #1e40af; font-size: 0.65rem;">SMS</span>
+                        <span class="px-1 py-0.5 rounded" style="background: #f3e8ff; color: #7e22ce; font-size: 0.65rem;">Email</span>
+                      </div>
+                    </div>
+                    <div class="p-2 rounded" style="background: white; border: 1px solid #e5e7eb;">
+                      <p class="font-semibold" style="color: #1f2937;">Flash Deal</p>
+                      <div class="flex space-x-1 mt-1">
+                        <span class="px-1 py-0.5 rounded" style="background: #dbeafe; color: #1e40af; font-size: 0.65rem;">SMS</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Bottom Sections -->
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="relative p-4 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-lg" style="background: #10b981; z-index: 10;">⑤</div>
+                  <h3 class="font-bold mb-2 text-sm" style="color: ${config.text_color};">🎁 Loyalty Stats</h3>
+                  <p class="text-xs" style="color: #374151;">Points: 45.2K • Top: Free Shipping</p>
+                </div>
+                <div class="p-4 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                  <h3 class="font-bold mb-2 text-sm" style="color: ${config.text_color};">🏷️ Xeno Trending Offers</h3>
+                  <p class="text-xs" style="color: #374151;">Most Used: SUMMER20 (Fashion)</p>
+                </div>
+              </div>
+              
+              <!-- Recent Activity -->
+              <div class="relative p-4 rounded-xl" style="background: #f9fafb; border: 2px solid #d1d5db;">
+                <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-white shadow-lg" style="background: #f59e0b; z-index: 10;">⑥</div>
+                <h3 class="font-bold mb-2" style="color: ${config.text_color};">📊 Recent Activity</h3>
+                <div class="space-y-1 text-xs">
+                  <p style="color: #374151;">• "Summer Sale" generated $12.4K today</p>
+                  <p style="color: #374151;">• 342 customers engaged via WhatsApp</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Annotation Explanations -->
+            <div class="grid grid-cols-2 gap-5 mt-6">
+              <div class="p-5 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-left: 4px solid #10b981;">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background: #10b981;">①</div>
+                  <div>
+                    <h4 class="font-bold mb-2 text-base" style="color: #065f46;">Revenue Front and Center</h4>
+                    <p class="text-sm" style="color: #374151;"><strong>Why:</strong> Marketers care most about revenue impact. Xeno's unique value is <em>attributable</em> incremental revenue, so we lead with it.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-5 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%); border-left: 4px solid #f97316;">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background: #f97316;">②</div>
+                  <div>
+                    <h4 class="font-bold mb-2 text-base" style="color: #9a3412;">Personalization Score</h4>
+                    <p class="text-sm" style="color: #374151;"><strong>Why:</strong> Shows <em>how well</em> they're using Xeno's AI. Acts as a health check and encourages deeper adoption of persona features.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-5 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6;">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background: ${config.primary_color};">③</div>
+                  <div>
+                    <h4 class="font-bold mb-2 text-base" style="color: #1e40af;">AI Recommendations = Action</h4>
+                    <p class="text-sm" style="color: #374151;"><strong>Why:</strong> Reduces "blank canvas syndrome." Each insight has a [Create] button—going from data to campaign in one click.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-5 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border-left: 4px solid #9333ea;">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background: #9333ea;">④</div>
+                  <div>
+                    <h4 class="font-bold mb-2 text-base" style="color: #6b21a8;">Cross-Channel at a Glance</h4>
+                    <p class="text-sm" style="color: #374151;"><strong>Why:</strong> Shows unified campaign view (SMS+Email+FB) so marketers see Xeno manages everything, not just one channel.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-5 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #10b981;">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background: #10b981;">��</div>
+                  <div>
+                    <h4 class="font-bold mb-2 text-base" style="color: #14532d;">Loyalty Integration</h4>
+                    <p class="text-sm" style="color: #374151;"><strong>Why:</strong> Loyalty data powers personalization. Showing it reminds users Xeno connects their loyalty program to campaigns.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-5 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b;">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background: #f59e0b;">⑥</div>
+                  <div>
+                    <h4 class="font-bold mb-2 text-base" style="color: #78350f;">Activity Feed Transparency</h4>
+                    <p class="text-sm" style="color: #374151;"><strong>Why:</strong> Real-time updates build trust. Marketers see Xeno is actively working���not a static dashboard.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Additional Context Cards -->
+            <div class="mt-8 p-6 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #7dd3fc;">
+              <div class="text-center mb-4">
+                <h3 class="text-2xl font-bold" style="color: #0c4a6e;">💡 Design Impact Summary</h3>
+                <p class="text-sm mt-2" style="color: #374151;">How these decisions align with Xeno's mission to delight customers and drive revenue</p>
+              </div>
+              
+              <div class="grid grid-cols-3 gap-4">
+                <div class="p-4 rounded-lg" style="background: white; border: 1px solid #bae6fd;">
+                  <div class="text-center mb-2">
+                    <span class="text-3xl">📊</span>
+                  </div>
+                  <h4 class="font-bold text-sm mb-2 text-center" style="color: #0c4a6e;">Data-Driven</h4>
+                  <p class="text-xs text-center" style="color: #374151;">Every metric shown is actionable and ties to revenue impact</p>
+                </div>
+                
+                <div class="p-4 rounded-lg" style="background: white; border: 1px solid #bae6fd;">
+                  <div class="text-center mb-2">
+                    <span class="text-3xl">⚡</span>
+                  </div>
+                  <h4 class="font-bold text-sm mb-2 text-center" style="color: #0c4a6e;">Fast Action</h4>
+                  <p class="text-xs text-center" style="color: #374151;">Reduced clicks from insight to campaign launch by 80%</p>
+                </div>
+                
+                <div class="p-4 rounded-lg" style="background: white; border: 1px solid #bae6fd;">
+                  <div class="text-center mb-2">
+                    <span class="text-3xl">🎯</span>
+                  </div>
+                  <h4 class="font-bold text-sm mb-2 text-center" style="color: #0c4a6e;">Persona-First</h4>
+                  <p class="text-xs text-center" style="color: #374151;">Customer behavior drives every recommendation and insight</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 6: How This Solves the Assignment
+      {
+        title: "How This Solves the Assignment",
+        render: (config) => `
+          <div class="space-y-8">
+            <h2 class="text-4xl font-bold text-center mb-8" style="color: ${config.text_color};">Meeting All Requirements</h2>
+            
+            <div class="rounded-xl shadow-2xl overflow-hidden" style="background: white; border: 2px solid #e5e7eb;">
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead style="background: linear-gradient(90deg, #1f2937 0%, #374151 100%);">
+                    <tr>
+                      <th class="p-5 text-left text-lg font-bold text-white" style="width: 35%;">Assignment Requirement</th>
+                      <th class="p-5 text-left text-lg font-bold text-white">How the Homepage Delivers</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 2px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                            <span style="font-size: 1.25rem;">📊</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base mb-1" style="color: ${config.text_color};">Understand what's happening</div>
+                            <p class="text-xs" style="color: #6b7280;">Real-time platform overview</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151;">
+                        <div class="space-y-2">
+                          <p class="text-base"><span class="font-bold" style="color: ${config.primary_color};">Snapshot KPIs + Campaign Health.</span></p>
+                          <p class="text-sm">At a glance: revenue ($284K today), platform health (Personalization Score 8.4/10), and active campaign status (12 journeys running)</p>
+                          <div class="flex items-center space-x-2 mt-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #dbeafe; color: #1e40af;">✓ F-pattern layout</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #dcfce7; color: #166534;">✓ Activity feed</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    <tr style="border-bottom: 2px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);">
+                            <span style="font-size: 1.25rem;">⚡</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base mb-1" style="color: ${config.text_color};">Take meaningful actions quickly</div>
+                            <p class="text-xs" style="color: #6b7280;">One-click campaign creation</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151;">
+                        <div class="space-y-2">
+                          <p class="text-base"><span class="font-bold" style="color: #10b981;">AI-Powered "Opportunity Hub".</span></p>
+                          <p class="text-sm">Surfaces specific actions with single [Create Campaign] buttons. Example: "Launch win-back offer for 500 'Discount-Seeking' personas" → one click to execute</p>
+                          <div class="flex items-center space-x-2 mt-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #dcfce7; color: #166534;">✓ Zero blank canvas</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #dbeafe; color: #1e40af;">✓ Pre-configured</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    <tr style="border-bottom: 2px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #fae8ff 0%, #f3e8ff 100%);">
+                            <span style="font-size: 1.25rem;">🎯</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base mb-1" style="color: ${config.text_color};">Reflect Xeno's differentiators</div>
+                            <p class="text-xs" style="color: #6b7280;">Showcase unique platform value</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151;">
+                        <div class="space-y-2">
+                          <p class="text-base"><span class="font-bold" style="color: #9333ea;">Personalization Score + Cross-Channel View.</span></p>
+                          <p class="text-sm">Highlights persona-based campaigns (not just demographics) across SMS, Email, WhatsApp, FB, Instagram in one unified workflow. Loyalty & offers data visibly power all personalization</p>
+                          <div class="flex items-center space-x-2 mt-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #fae8ff; color: #7e22ce;">✓ 360° customer view</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #dbeafe; color: #1e40af;">✓ Multi-channel</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    <tr style="transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);">
+                            <span style="font-size: 1.25rem;">🔄</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base mb-1" style="color: ${config.text_color};">Support marketer workflows</div>
+                            <p class="text-xs" style="color: #6b7280;">Efficient daily operations</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151;">
+                        <div class="space-y-2">
+                          <p class="text-base"><span class="font-bold" style="color: #ea580c;">Quick Create + Journey Health.</span></p>
+                          <p class="text-sm">Header "Quick Create Campaign" button for major tasks. Campaign cards show multi-channel status at a glance. Automated journey health monitoring with color-coded indicators</p>
+                          <div class="flex items-center space-x-2 mt-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #fed7aa; color: #9a3412;">✓ Fast access</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #dcfce7; color: #166534;">✓ Health checks</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="p-8 rounded-2xl shadow-xl" style="background: linear-gradient(135deg, #eff6ff 0%, #d1fae5 100%); border-left: 6px solid ${config.primary_color};">
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0">
+                  <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, ${config.primary_color} 0%, ${config.accent_color} 100%);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                      <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold mb-3" style="color: ${config.text_color};">Key Insight</h3>
+                  <p class="text-xl leading-relaxed" style="color: #374151;">
+                    <span class="italic">"We don't just show data; we show the </span>
+                    <span class="font-bold text-2xl" style="color: ${config.primary_color};">action</span>
+                    <span class="italic"> the data suggests, embodying Xeno's promise to make personalization possible, not a nightmare."</span>
+                  </p>
+                  <div class="mt-4 pt-4" style="border-top: 2px solid rgba(59, 130, 246, 0.2);">
+                    <p class="text-sm font-semibold" style="color: #4b5563;">Design Philosophy: Revenue-First, Action-Oriented, Persona-Centric</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-5 mt-6">
+              <div class="p-5 rounded-xl text-center shadow-lg" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #fcd34d;">
+                <div class="text-4xl mb-3">🎯</div>
+                <div class="text-3xl font-bold mb-2" style="color: ${config.text_color};">80%</div>
+                <p class="text-sm font-semibold" style="color: #78350f;">Fewer clicks to launch campaigns</p>
+              </div>
+              
+              <div class="p-5 rounded-xl text-center shadow-lg" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border: 2px solid #a5b4fc;">
+                <div class="text-4xl mb-3">⚡</div>
+                <div class="text-3xl font-bold mb-2" style="color: ${config.text_color};">5+</div>
+                <p class="text-sm font-semibold" style="color: #312e81;">Channels managed in one view</p>
+              </div>
+              
+              <div class="p-5 rounded-xl text-center shadow-lg" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border: 2px solid #6ee7b7;">
+                <div class="text-4xl mb-3">💰</div>
+                <div class="text-3xl font-bold mb-2" style="color: ${config.text_color};">100%</div>
+                <p class="text-sm font-semibold" style="color: #14532d;">Revenue attribution visibility</p>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 7: What's Included & Why
+      {
+        title: "What's Included & Why",
+        render: (config) => `
+          <div class="space-y-8">
+            <h2 class="text-4xl font-bold text-center mb-8" style="color: ${config.text_color};">Component Breakdown</h2>
+            
+            <div class="rounded-xl shadow-2xl overflow-hidden" style="background: white; border: 2px solid #e5e7eb;">
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead style="background: linear-gradient(90deg, #1f2937 0%, #374151 100%);">
+                    <tr>
+                      <th class="p-5 text-left text-base font-bold text-white" style="width: 25%;">Component</th>
+                      <th class="p-5 text-left text-base font-bold text-white" style="width: 40%;">Purpose</th>
+                      <th class="p-5 text-left text-base font-bold text-white" style="width: 35%;">Business Impact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="border-bottom: 2px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);">
+                            <span style="font-size: 1.25rem;">💰</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base" style="color: ${config.text_color};">Revenue Impact Metrics</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151; vertical-align: top;">
+                        <p class="text-base">Demonstrate direct, attributable value of using Xeno</p>
+                        <p class="text-sm mt-2" style="color: #6b7280;">Shows $284K incremental revenue today with clear "Xeno-driven" attribution</p>
+                      </td>
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #86efac;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          <span class="font-bold text-sm" style="color: #14532d;">Justifies platform ROI</span>
+                        </div>
+                        <p class="text-xs mt-2" style="color: #6b7280;">Helps marketers prove value to leadership</p>
+                      </td>
+                    </tr>
+                    
+                    <tr style="border-bottom: 2px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #fae8ff 0%, #f3e8ff 100%);">
+                            <span style="font-size: 1.25rem;">🎯</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base" style="color: ${config.text_color};">Personalization Score</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151; vertical-align: top;">
+                        <p class="text-base">Quantify adoption of Xeno's core persona-based segmentation</p>
+                        <p class="text-sm mt-2" style="color: #6b7280;">8.4/10 score encourages deeper use of persona features</p>
+                      </td>
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm" style="background: linear-gradient(135deg, #fae8ff 0%, #f3e8ff 100%); border: 2px solid #d8b4fe;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7e22ce" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          <span class="font-bold text-sm" style="color: #6b21a8;">Drives platform stickiness</span>
+                        </div>
+                        <p class="text-xs mt-2" style="color: #6b7280;">Gamifies feature adoption and engagement</p>
+                      </td>
+                    </tr>
+                    
+                    <tr style="border-bottom: 2px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                            <span style="font-size: 1.25rem;">💡</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base" style="color: ${config.text_color};">AI Recommendations</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151; vertical-align: top;">
+                        <p class="text-base">Reduce time from data analysis to campaign launch</p>
+                        <p class="text-sm mt-2" style="color: #6b7280;">Pre-configured actions like "Win-back for Discount-Seeking personas"</p>
+                      </td>
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 2px solid #93c5fd;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          <span class="font-bold text-sm" style="color: #1e3a8a;">Faster execution</span>
+                        </div>
+                        <p class="text-xs mt-2" style="color: #6b7280;">Eliminates "blank canvas syndrome"</p>
+                      </td>
+                    </tr>
+                    
+                    <tr style="border-bottom: 2px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);">
+                            <span style="font-size: 1.25rem;">🚀</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base" style="color: ${config.text_color};">Active Cross-Channel Campaigns</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151; vertical-align: top;">
+                        <p class="text-base">Visually demonstrate Xeno's unified workflow advantage</p>
+                        <p class="text-sm mt-2" style="color: #6b7280;">Shows campaigns spanning SMS + Email + WhatsApp + FB in one card</p>
+                      </td>
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border: 2px solid #a5b4fc;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4338ca" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          <span class="font-bold text-sm" style="color: #312e81;">Reinforces key differentiator</span>
+                        </div>
+                        <p class="text-xs mt-2" style="color: #6b7280;">Single view vs. switching between tools</p>
+                      </td>
+                    </tr>
+                    
+                    <tr style="transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="flex items-start space-x-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);">
+                            <span style="font-size: 1.25rem;">🎁</span>
+                          </div>
+                          <div>
+                            <div class="font-bold text-base" style="color: ${config.text_color};">Loyalty & Offers Pulse</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-5" style="color: #374151; vertical-align: top;">
+                        <p class="text-base">Surface the foundational data that powers personalization</p>
+                        <p class="text-sm mt-2" style="color: #6b7280;">45.2K points issued, SUMMER20 trending - data feeding AI</p>
+                      </td>
+                      <td class="p-5" style="vertical-align: top;">
+                        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm" style="background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%); border: 2px solid #fdba74;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a3412" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          <span class="font-bold text-sm" style="color: #78350f;">Connects loyalty to revenue</span>
+                        </div>
+                        <p class="text-xs mt-2" style="color: #6b7280;">Shows how Xeno unifies customer data</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-6 mt-8">
+              <div class="p-6 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #86efac;">
+                <div class="flex items-center space-x-3 mb-4">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                      <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                  </div>
+                  <h3 class="text-xl font-bold" style="color: #065f46;">What We Included</h3>
+                </div>
+                <ul class="space-y-2 text-sm" style="color: #374151;">
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #10b981; font-size: 1.25rem; line-height: 1;">✓</span>
+                    <span><strong>Revenue metrics</strong> that tie to business outcomes</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #10b981; font-size: 1.25rem; line-height: 1;">✓</span>
+                    <span><strong>Action buttons</strong> for every insight</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #10b981; font-size: 1.25rem; line-height: 1;">✓</span>
+                    <span><strong>Cross-channel visibility</strong> in unified cards</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #10b981; font-size: 1.25rem; line-height: 1;">✓</span>
+                    <span><strong>Persona-based segmentation</strong> (not just demographics)</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #10b981; font-size: 1.25rem; line-height: 1;">✓</span>
+                    <span><strong>Loyalty & offer integration</strong> shown transparently</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="p-6 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); border: 2px solid #fca5a5;">
+                <div class="flex items-center space-x-3 mb-4">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="15" y1="9" x2="9" y2="15"/>
+                      <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                  </div>
+                  <h3 class="text-xl font-bold" style="color: #7f1d1d;">What We Excluded</h3>
+                </div>
+                <ul class="space-y-2 text-sm" style="color: #374151;">
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #ef4444; font-size: 1.25rem; line-height: 1;">✗</span>
+                    <span><strong>Vanity metrics</strong> (opens, clicks without context)</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #ef4444; font-size: 1.25rem; line-height: 1;">✗</span>
+                    <span><strong>Technical jargon</strong> (API status, server health)</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #ef4444; font-size: 1.25rem; line-height: 1;">✗</span>
+                    <span><strong>Deep analytics</strong> (saved for dedicated reports page)</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #ef4444; font-size: 1.25rem; line-height: 1;">✗</span>
+                    <span><strong>Admin settings</strong> (in separate configuration area)</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span style="color: #ef4444; font-size: 1.25rem; line-height: 1;">✗</span>
+                    <span><strong>Raw segment lists</strong> (accessed via campaign builder)</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="p-8 rounded-2xl shadow-xl" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 6px solid #f59e0b;">
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0">
+                  <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold mb-3" style="color: #78350f;">Design Philosophy: Purposeful Minimalism</h3>
+                  <p class="text-lg leading-relaxed" style="color: #374151;">
+                    Every component on the homepage serves a specific purpose aligned with Xeno's mission. 
+                    <span class="font-semibold">We included only what helps marketers understand performance, take action, and see Xeno's unique value.</span>
+                    Everything else lives in dedicated pages to keep the homepage focused and actionable.
+                  </p>
+                  <div class="mt-4 flex items-center space-x-2">
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold" style="background: #fde68a; color: #78350f;">Signal over noise</span>
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold" style="background: #fde68a; color: #78350f;">Action-oriented</span>
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold" style="background: #fde68a; color: #78350f;">Value-focused</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 8: Success & Future
+      {
+        title: "Success & Future",
+        render: (config) => `
+          <div class="space-y-10">
+            <div>
+              <h2 class="text-4xl font-bold text-center mb-6" style="color: ${config.text_color};">Success Metrics</h2>
+              <p class="text-xl text-center mb-8" style="color: #6b7280;">What we'd track to measure effectiveness:</p>
+              
+              <div class="grid grid-cols-3 gap-8">
+                <div class="p-8 rounded-xl shadow-xl text-center" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-top: 6px solid ${config.primary_color};">
+                  <div class="text-6xl font-bold mb-4" style="color: ${config.primary_color};">&lt; 45s</div>
+                  <div class="text-xl font-semibold mb-3" style="color: ${config.text_color};">Time-to-First-Action</div>
+                  <div class="text-base" style="color: #4b5563;">Marketer performs meaningful action within 45 seconds of login</div>
+                  <div class="mt-4 pt-4" style="border-top: 2px solid ${config.primary_color};">
+                    <p class="text-sm font-semibold" style="color: ${config.primary_color};">Measures: Homepage Effectiveness</p>
+                  </div>
+                </div>
+                
+                <div class="p-8 rounded-xl shadow-xl text-center" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-top: 6px solid #10b981;">
+                  <div class="text-6xl font-bold mb-4" style="color: #10b981;">+15%</div>
+                  <div class="text-xl font-semibold mb-3" style="color: ${config.text_color};">Personalization Score</div>
+                  <div class="text-base" style="color: #4b5563;">Average score increase across all accounts in one quarter</div>
+                  <div class="mt-4 pt-4" style="border-top: 2px solid #10b981;">
+                    <p class="text-sm font-semibold" style="color: #10b981;">Measures: Platform Adoption</p>
+                  </div>
+                </div>
+                
+                <div class="p-8 rounded-xl shadow-xl text-center" style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border-top: 6px solid #9333ea;">
+                  <div class="text-6xl font-bold mb-4" style="color: #9333ea;">30%</div>
+                  <div class="text-xl font-semibold mb-3" style="color: ${config.text_color};">Recommendation Adoption</div>
+                  <div class="text-base" style="color: #4b5563;">New campaigns started from AI Opportunity Hub</div>
+                  <div class="mt-4 pt-4" style="border-top: 2px solid #9333ea;">
+                    <p class="text-sm font-semibold" style="color: #9333ea;">Measures: AI Value</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-10 p-6 rounded-xl" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border: 2px solid #d1d5db;">
+                <h3 class="text-xl font-bold mb-4 text-center" style="color: ${config.text_color};">Why These Metrics Matter</h3>
+                <div class="grid grid-cols-3 gap-6 text-center">
+                  <div>
+                    <div class="text-3xl mb-2">⚡</div>
+                    <p class="text-sm font-semibold mb-1" style="color: ${config.text_color};">Speed of Value</p>
+                    <p class="text-xs" style="color: #6b7280;">Fast action = engaged users</p>
+                  </div>
+                  <div>
+                    <div class="text-3xl mb-2">📈</div>
+                    <p class="text-sm font-semibold mb-1" style="color: ${config.text_color};">Feature Depth</p>
+                    <p class="text-xs" style="color: #6b7280;">Score growth = deeper usage</p>
+                  </div>
+                  <div>
+                    <div class="text-3xl mb-2">🤖</div>
+                    <p class="text-sm font-semibold mb-1" style="color: ${config.text_color};">AI Trust</p>
+                    <p class="text-xs" style="color: #6b7280;">High adoption = users trust AI</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h2 class="text-4xl font-bold text-center mb-8" style="color: ${config.text_color};">Future Iterations</h2>
+              
+              <div class="space-y-5">
+                <div class="p-6 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 6px solid ${config.primary_color};">
+                  <div class="flex items-start space-x-5">
+                    <div class="flex-shrink-0">
+                      <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg" style="background: linear-gradient(135deg, ${config.primary_color} 0%, ${config.accent_color} 100%);">
+                        👔
+                      </div>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="text-2xl font-bold mb-3" style="color: ${config.text_color};">Role-Based Views</h4>
+                      <p class="text-base leading-relaxed" style="color: #374151;">
+                        <span class="font-semibold">Streamlined view for Managers</span> (ROI, forecasts, executive summary) vs. 
+                        <span class="font-semibold"> granular view for Analysts</span> (deep-dive reports, segment performance, A/B test results)
+                      </p>
+                      <div class="mt-4 flex items-center space-x-2">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #bfdbfe; color: #1e40af;">👨‍💼 Manager Mode</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #bfdbfe; color: #1e40af;">📊 Analyst Mode</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #bfdbfe; color: #1e40af;">🔄 One-click toggle</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="p-6 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 6px solid #10b981;">
+                  <div class="flex items-start space-x-5">
+                    <div class="flex-shrink-0">
+                      <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        📊
+                      </div>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="text-2xl font-bold mb-3" style="color: ${config.text_color};">Industry Benchmarks</h4>
+                      <p class="text-base leading-relaxed" style="color: #374151;">
+                        Compare KPIs like <span class="font-semibold">Personalization Score</span> against peer retailers 
+                        (e.g., "Your 8.4/10 is above the Fashion Retail average of 7.2"). 
+                        <span class="font-semibold">Competitive context</span> drives improvement and validates platform value.
+                      </p>
+                      <div class="mt-4 flex items-center space-x-2">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #bbf7d0; color: #166534;">🏆 Peer comparison</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #bbf7d0; color: #166534;">📈 Industry trends</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #bbf7d0; color: #166534;">🎯 Goal setting</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="p-6 rounded-xl shadow-lg" style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border-left: 6px solid #9333ea;">
+                  <div class="flex items-start space-x-5">
+                    <div class="flex-shrink-0">
+                      <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg" style="background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);">
+                        🔮
+                      </div>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="text-2xl font-bold mb-3" style="color: ${config.text_color};">Predictive Forecasting</h4>
+                      <p class="text-base leading-relaxed" style="color: #374151;">
+                        Use AI to <span class="font-semibold">forecast next week's incremental revenue</span> based on scheduled campaigns and customer trends. 
+                        Show confidence intervals and scenario modeling (e.g., "If you boost the WhatsApp campaign, revenue could increase by $45K").
+                      </p>
+                      <div class="mt-4 flex items-center space-x-2">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #e9d5ff; color: #6b21a8;">🤖 AI-powered</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #e9d5ff; color: #6b21a8;">💡 Scenario testing</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background: #e9d5ff; color: #6b21a8;">📅 Weekly forecasts</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-10 p-8 rounded-2xl shadow-2xl" style="background: linear-gradient(135deg, #1f2937 0%, #374151 100%);">
+                <div class="text-center">
+                  <div class="inline-flex items-center space-x-3 mb-4">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, ${config.accent_color} 0%, ${config.primary_color} 100%);">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                      </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white">Iterative Improvement Philosophy</h3>
+                  </div>
+                  <p class="text-lg text-white leading-relaxed max-w-4xl mx-auto" style="color: #d1d5db;">
+                    Each future iteration builds on the <span class="font-bold" style="color: ${config.accent_color};">core principle</span>: 
+                    <span class="italic">"Show value fast, enable action faster."</span> 
+                    We'd validate these features through <span class="font-semibold">user interviews</span> and 
+                    <span class="font-semibold">A/B testing</span> before full rollout.
+                  </p>
+                  <div class="mt-6 flex justify-center items-center space-x-3">
+                    <span class="px-4 py-2 rounded-lg text-sm font-bold" style="background: rgba(6, 182, 212, 0.2); color: ${config.accent_color};">User-Driven Design</span>
+                    <span class="px-4 py-2 rounded-lg text-sm font-bold" style="background: rgba(6, 182, 212, 0.2); color: ${config.accent_color};">Data-Backed Decisions</span>
+                    <span class="px-4 py-2 rounded-lg text-sm font-bold" style="background: rgba(6, 182, 212, 0.2); color: ${config.accent_color};">Continuous Evolution</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 9: Conclusion
+      {
+        title: "Conclusion",
+        render: (config) => `
+          <div class="flex flex-col items-center justify-center h-full space-y-12" style="min-height: 600px;">
+            <h2 class="text-6xl font-bold text-center mb-8" style="color: ${config.text_color};">The Xeno Homepage Delivers</h2>
+            
+            <div class="space-y-6 max-w-4xl w-full">
+              <div class="p-8 rounded-2xl shadow-2xl text-white" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                <div class="flex items-start space-x-6">
+                  <div class="text-7xl flex-shrink-0">✅</div>
+                  <div>
+                    <h3 class="text-4xl font-bold mb-3">Instant Understanding</h3>
+                    <p class="text-2xl leading-relaxed">Immediate clarity on revenue, system health, and live opportunities</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-8 rounded-2xl shadow-2xl text-white" style="background: linear-gradient(135deg, ${config.primary_color} 0%, ${config.secondary_color} 100%);">
+                <div class="flex items-start space-x-6">
+                  <div class="text-7xl flex-shrink-0">✅</div>
+                  <div>
+                    <h3 class="text-4xl font-bold mb-3">One-Click Action</h3>
+                    <p class="text-2xl leading-relaxed">Bridges the gap between insight and execution, reducing campaign launch from hours to seconds</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-8 rounded-2xl shadow-2xl text-white" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);">
+                <div class="flex items-start space-x-6">
+                  <div class="text-7xl flex-shrink-0">✅</div>
+                  <div>
+                    <h3 class="text-4xl font-bold mb-3">Mission Alignment</h3>
+                    <p class="text-2xl leading-relaxed">Makes personalization tangible, measurable, and directly tied to growth</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-10 rounded-2xl shadow-2xl max-w-4xl w-full mt-8" style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border: 3px solid #f59e0b;">
+              <h3 class="text-3xl font-bold mb-6 text-center" style="color: #78350f;">Final Thought</h3>
+              <p class="text-2xl leading-relaxed italic text-center" style="color: #1f2937;">
+                "This homepage is a <span class="font-bold not-italic" style="color: #ea580c;">command center</span> that empowers marketers to fulfill Xeno's mission: to delight every customer personally and drive attributable revenue growth—starting from their very first login."
+              </p>
+              <div class="mt-8 flex justify-center items-center space-x-4">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, ${config.primary_color} 0%, ${config.accent_color} 100%);">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                  </svg>
+                </div>
+                <div class="text-center">
+                  <p class="text-2xl font-bold" style="color: #78350f;">Thank You</p>
+                  <p class="text-lg" style="color: #9a3412;">Xeno PM Intern Assignment</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      
+      // Slide 10: Thank You & Q&A
+      {
+        title: "Thank You",
+        render: (config) => `
+          <div class="flex flex-col items-center justify-center h-full rounded-xl p-12" style="background: linear-gradient(135deg, #312e81 0%, #581c87 50%, #1e3a8a 100%); min-height: 600px;">
+            <div class="text-center space-y-8 max-w-4xl">
+              <div class="flex items-center justify-center space-x-4 mb-8">
+                <div class="w-24 h-24 rounded-2xl flex items-center justify-center shadow-2xl" style="background: linear-gradient(135deg, #06b6d4 0%, ${config.primary_color} 100%);">
+                  <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                </div>
+              </div>
+              
+              <h1 class="text-7xl font-bold leading-tight text-white">Thank You!</h1>
+              <p class="text-3xl" style="color: #67e8f9;">Questions & Discussion</p>
+              
+              <div class="mt-12 pt-8 space-y-4" style="border-top: 1px solid rgba(103, 232, 249, 0.3);">
+                <p class="text-2xl font-semibold" style="color: #cffafe;">${config.author_name}</p>
+                <p class="text-xl" style="color: #d1d5db;">PM Intern Assignment - Xeno Homepage Design</p>
+                <p class="text-lg" style="color: #9ca3af;">${config.institution_name}</p>
+              </div>
+              
+              <div class="mt-12 flex justify-center flex-wrap gap-4">
+                <div class="px-8 py-4 rounded-xl shadow-lg" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+                  <p class="text-base font-semibold" style="color: #67e8f9;">Revenue-First</p>
+                </div>
+                <div class="px-8 py-4 rounded-xl shadow-lg" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+                  <p class="text-base font-semibold" style="color: #67e8f9;">Action-Oriented</p>
+                </div>
+                <div class="px-8 py-4 rounded-xl shadow-lg" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+                  <p class="text-base font-semibold" style="color: #67e8f9;">Persona-Centric</p>
+                </div>
+              </div>
+              
+              <div class="mt-12 pt-8" style="border-top: 1px solid rgba(103, 232, 249, 0.3);">
+                <div class="flex items-center justify-center space-x-3">
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, ${config.accent_color} 0%, ${config.primary_color} 100%);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-xl font-bold text-white">XENO</p>
+                    <p class="text-sm" style="color: #67e8f9;">Delight customers, drive revenue</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      }
+    ];
+    
+    function renderSlide() {
+      const slideContent = document.getElementById('slideContent');
+      const config = window.elementSdk?.config || defaultConfig;
+      slideContent.innerHTML = slides[currentSlide].render(config);
+      
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = currentSlide === 0;
+      document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+      
+      // Update indicators
+      renderIndicators();
+    }
+    
+    function renderIndicators() {
+      const indicator = document.getElementById('slideIndicator');
+      indicator.innerHTML = slides.map((_, index) => 
+        `<div class="dot ${index === currentSlide ? 'active' : ''}"></div>`
+      ).join('');
+    }
+    
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        renderSlide();
+      }
+    });
+    
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        renderSlide();
+      }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && currentSlide > 0) {
+        currentSlide--;
+        renderSlide();
+      } else if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+        currentSlide++;
+        renderSlide();
+      }
+    });
+    
+    async function onConfigChange(config) {
+      renderSlide();
+    }
+    
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              config.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              config.secondary_color = value;
+              window.elementSdk.setConfig({ secondary_color: value });
+            }
+          },
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+    
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["presentation_title", config.presentation_title || defaultConfig.presentation_title],
+        ["presentation_subtitle", config.presentation_subtitle || defaultConfig.presentation_subtitle],
+        ["author_name", config.author_name || defaultConfig.author_name],
+        ["institution_name", config.institution_name || defaultConfig.institution_name]
+      ]);
+    }
+    
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+    
+    renderSlide();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9aa3f6fc943ba834',t:'MTc2NTEwOTg5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
