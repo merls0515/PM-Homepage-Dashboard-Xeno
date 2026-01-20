@@ -1,181 +1,228 @@
-📊 Xeno PM Intern Assignment – Homepage Design
+<div align="center">
 
-From Login to Impact
+# 📊 Xeno PM Intern Assignment
+### *From Login to Impact*
 
-👤 Candidate
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://figma.com)
+[![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white)](https://canva.com)
 
-Merlyn Victor
-Product Management Internship Assignment
+**👤 Candidate:** Merlyn Victor  
+**📋 Role:** Product Management Internship Assignment
 
-🧩 Problem Statement
+---
 
-Design the first screen after login for a retail marketer using Xeno, such that the screen:
+</div>
 
-Helps marketers quickly understand what’s happening across campaigns, customers, and revenue
+## 🧩 Problem Statement
 
-Enables them to take the most meaningful and impactful actions with minimal effort
+> Design the first screen after login for a retail marketer using Xeno, such that the screen:
+> - Helps marketers quickly understand what's happening across campaigns, customers, and revenue
+> - Enables them to take the most meaningful and impactful actions with minimal effort
 
-The goal was not just to design a dashboard, but to create a decision and action hub aligned with Xeno’s mission of AI-powered personalization and profitable growth.
+**The Challenge:** Create not just a dashboard, but a **decision and action hub** aligned with Xeno's mission of AI-powered personalization and profitable growth.
 
-🏢 About Xeno (Context)
+---
 
-Xeno is a NextGen loyalty and customer engagement platform that enables retail brands to:
+## 🏢 About Xeno
 
-Build a 360° unified customer view
+Xeno is a **NextGen loyalty and customer engagement platform** that enables retail brands to:
 
-Run AI-driven, personalized, omnichannel campaigns
+```
+✓ Build a 360° unified customer view
+✓ Run AI-driven, personalized, omnichannel campaigns
+✓ Automate engagement across the entire customer lifecycle
+✓ Drive measurable incremental revenue using loyalty, offers, and gamification
+```
 
-Automate engagement across the entire customer lifecycle
+---
 
-Drive measurable incremental revenue using loyalty, offers, and gamification
+## 🎯 Target User: Retail Marketing Manager
 
-🎯 Target User
+<table>
+<tr>
+<td width="50%">
 
-Retail Marketing Manager
+### 🔴 Key Challenges
+- Overloaded with campaigns across multiple channels
+- Difficult to personalize at scale
+- Hard to identify what's working and what needs attention
+- Needs to prove ROI and act quickly
 
-Key Challenges:
+</td>
+<td width="50%">
 
-Overloaded with campaigns across multiple channels
+### 🟢 What They Need on Login
+- Clear performance snapshot
+- Visibility into opportunities & issues
+- Actionable recommendations, not just data
 
-Difficult to personalize at scale
+</td>
+</tr>
+</table>
 
-Hard to identify what’s working and what needs attention
+---
 
-Needs to prove ROI and act quickly
+## 🧠 Product Thinking & Design Principles
 
-What they need on login:
+<div align="center">
 
-A clear performance snapshot
+| 💰 **Revenue-First** | ⚡ **Action-Oriented** | 👥 **Persona-Centric** |
+|:---:|:---:|:---:|
+| Focus on metrics that directly impact revenue & retention | Every insight paired with clear next step or CTA | Organized around customer behavior, not channels |
 
-Visibility into opportunities & issues
+</div>
 
-Actionable recommendations, not just data
+---
 
-🧠 Product Thinking & Design Principles
+## 🧱 Homepage Structure
 
-The homepage was designed using three guiding principles:
+### 1️⃣ **Performance Snapshot** (Top KPIs)
+```yaml
+- Incremental revenue generated
+- Personalization score
+- Active journeys
+- Offer redemption rate
+```
 
-Revenue-First
-Focus on metrics and insights that directly impact revenue and retention.
+### 2️⃣ **AI-Powered Recommendations** ⭐ *Core Section*
+- Next best actions based on customer personas
+- One-click campaign/journey creation
 
-Action-Oriented
-Every insight is paired with a clear next step or CTA.
+### 3️⃣ **Campaign & Journey Overview**
+- Unified cross-channel performance view
+- Status, engagement, and revenue attribution
 
-Persona-Centric
-Insights are organized around customer behavior and journeys, not just channels.
+### 4️⃣ **Loyalty & Recent Activity**
+- Engagement trends
+- Real-time customer interactions
 
-🧱 Homepage Structure (High-Level)
+### 5️⃣ **Quick Action Shortcuts**
+- Create campaign
+- Create journey
+- Create offer or segment
 
-Performance Snapshot (Top KPIs)
+> 💡 **Design Pattern:** F-pattern scan ensuring the most important information is seen first
 
-Incremental revenue generated
+---
 
-Personalization score
+## ✂️ Intentional Trade-offs
 
-Active journeys
+<table>
+<tr>
+<th>✅ Included</th>
+<th>❌ Excluded</th>
+</tr>
+<tr>
+<td>
 
-Offer redemption rate
+- Revenue-linked KPIs
+- AI recommendations
+- Action-driven components
 
-AI-Powered Recommendations (Core Section)
+</td>
+<td>
 
-Next best actions based on customer personas
+- Deep analytics
+- Admin & configuration settings
+- Low-frequency tasks
 
-One-click campaign / journey creation
+</td>
+</tr>
+</table>
 
-Campaign & Journey Overview
+**Rationale:** The homepage is optimized for **speed, clarity, and action**, while deeper analysis lives on dedicated pages.
 
-Unified cross-channel performance view
+---
 
-Status, engagement, and revenue attribution
+## 📈 Success Metrics
 
-Loyalty & Recent Activity
+<div align="center">
 
-Engagement trends
+| Metric | Target | Why It Matters |
+|--------|--------|----------------|
+| ⏱️ Time-to-first-action | < 45 seconds | Measures usability & clarity |
+| 🤖 AI recommendation adoption | Track % | Validates AI value proposition |
+| 🚀 Campaigns launched via recommendations | Increase | Shows action enablement |
+| 📊 Personalization score improvement | Upward trend | Proves platform impact |
 
-Real-time customer interactions
+</div>
 
-Quick Action Shortcuts
+> These metrics measure **real behavioral impact**, not just usage.
 
-Create campaign
+---
 
-Create journey
+## 🔮 Future Iterations
 
-Create offer or segment
+```mermaid
+graph LR
+    A[Current Design] --> B[Role-based Dashboards]
+    A --> C[Industry Benchmarking]
+    A --> D[Predictive Forecasting]
+    B --> E[Manager vs Analyst Views]
+    C --> F[Peer Comparison]
+    D --> G[Revenue & Engagement Predictions]
+```
 
-The layout follows an F-pattern scan, ensuring the most important information is seen first.
+**Philosophy:** *Show value fast → enable action faster*
 
-✂️ Intentional Trade-offs
-Included:
+---
 
-Revenue-linked KPIs
+## 🛠️ Tools & Technologies
 
-AI recommendations
+<div align="center">
 
-Action-driven components
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
+![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=flat-square&logo=Canva&logoColor=white)
 
-Excluded:
+**Frameworks Used:** Personas | JTBD | Prioritization | Success Metrics  
+**Research:** Xeno website, product videos, use-case analysis
 
-Deep analytics
+</div>
 
-Admin & configuration settings
+---
 
-Low-frequency tasks
+## ✅ Outcome
 
-Rationale:
-The homepage is optimized for speed, clarity, and action, while deeper analysis lives on dedicated pages.
+<div align="center">
 
-📈 Success Metrics (How This Would Be Measured)
+### This solution delivers:
 
-If implemented, success would be evaluated using:
+🎯 **Instant understanding** of performance  
+🤖 **Clear, AI-driven** next actions  
+🚀 **Strong alignment** with Xeno's product vision
 
-Time-to-first-action (target: < 45 seconds)
+> The homepage acts as a **command center**, not just a dashboard — translating Xeno's promise of personalization into immediate, measurable impact.
 
-Adoption rate of AI recommendations
+</div>
 
-Increase in campaigns launched via recommendations
+---
 
-Improvement in personalization score
+## 🔗 Submission Links
 
-These metrics measure real behavioral impact, not just usage.
+<div align="center">
 
-🔮 Future Iterations
+### 📄 [**View Final Presentation Deck**](https://www.canva.com/design/DAG6rKq9A0A/CJc0SISFTUsYy5DBoX6y1A/edit?utm_content=DAG6rKq9A0A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-Role-based dashboards (Manager vs Analyst views)
+[![View Deck](https://img.shields.io/badge/View_on-Canva-00C4CC?style=for-the-badge&logo=canva&logoColor=white)](https://www.canva.com/design/DAG6rKq9A0A/CJc0SISFTUsYy5DBoX6y1A/edit?utm_content=DAG6rKq9A0A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-Industry benchmarking to compare performance with peers
+</div>
 
-Predictive forecasting for revenue and engagement
+---
 
-All future enhancements follow the same philosophy:
-Show value fast → enable action faster.
+## 🙏 Closing Note
 
-🛠 Tools & Technologies Used
+<div align="center">
 
-Figma – Wireframing & layout design
+**Thank you for reviewing my submission!**
 
-Canva – Final presentation deck
+I thoroughly enjoyed working on this problem and would love the opportunity to  
+discuss my approach, decisions, and learnings further.
 
-Product Thinking Frameworks – Personas, JTBD, prioritization, success metrics
+---
 
-Desk Research – Xeno website, product videos, and use-case analysis
+*Made with ❤️ by Merlyn Victor*
 
-✅ Outcome
+[![LinkedIn](https://img.shields.io/badge/Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]()
+[![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=About.me&logoColor=white)]()
 
-This solution delivers:
-
-Instant understanding of performance
-
-Clear, AI-driven next actions
-
-Strong alignment with Xeno’s product vision
-
-The homepage acts as a command center, not just a dashboard — translating Xeno’s promise of personalization into immediate, measurable impact.
-
-🔗 Submission Links
-
-📄 Final Deck: ((https://www.canva.com/design/DAG6rKq9A0A/CJc0SISFTUsYy5DBoX6y1A/edit?utm_content=DAG6rKq9A0A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton))
-
-🙏 Closing Note
-
-Thank you for reviewing my submission.
-I thoroughly enjoyed working on this problem and would love the opportunity to discuss my approach, decisions, and learnings further.
+</div>
