@@ -173,9 +173,7 @@ The homepage acts as a command center, not just a dashboard — translating Xeno
 
 🔗 Submission Links
 
-🎥 Video Walkthrough: (insert link)
-
-📄 Final Deck: (insert Canva link)
+📄 Final Deck: ((https://www.canva.com/design/DAG6rKq9A0A/CJc0SISFTUsYy5DBoX6y1A/edit?utm_content=DAG6rKq9A0A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton))
 
 🙏 Closing Note
 
